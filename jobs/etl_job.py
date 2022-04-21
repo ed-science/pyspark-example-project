@@ -69,12 +69,7 @@ def extract_data(spark):
     :param spark: Spark session object.
     :return: Spark DataFrame.
     """
-    df = (
-        spark
-        .read
-        .parquet('tests/test_data/employees'))
-
-    return df
+    return spark.read.parquet('tests/test_data/employees')
 
 
 def transform_data(df, steps_per_floor_):
@@ -85,17 +80,11 @@ def transform_data(df, steps_per_floor_):
         Street.
     :return: Transformed DataFrame.
     """
-    df_transformed = (
-        df
-        .select(
-            col('id'),
-            concat_ws(
-                ' ',
-                col('first_name'),
-                col('second_name')).alias('name'),
-               (col('floor') * lit(steps_per_floor_)).alias('steps_to_desk')))
-
-    return df_transformed
+    return df.select(
+        col('id'),
+        concat_ws(' ', col('first_name'), col('second_name')).alias('name'),
+        (col('floor') * lit(steps_per_floor_)).alias('steps_to_desk'),
+    )
 
 
 def load_data(df):

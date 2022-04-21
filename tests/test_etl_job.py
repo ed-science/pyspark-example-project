@@ -40,15 +40,13 @@ class SparkETLTests(unittest.TestCase):
         expected.
         """
         # assemble
-        input_data = (
-            self.spark
-            .read
-            .parquet(self.test_data_path + 'employees'))
+        input_data = self.spark.read.parquet(f'{self.test_data_path}employees')
 
-        expected_data = (
-            self.spark
-            .read
-            .parquet(self.test_data_path + 'employees_report'))
+
+        expected_data = self.spark.read.parquet(
+            f'{self.test_data_path}employees_report'
+        )
+
 
         expected_cols = len(expected_data.columns)
         expected_rows = expected_data.count()

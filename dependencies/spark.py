@@ -90,15 +90,15 @@ def start_spark(app_name='my_spark_app', master='local[*]', jar_packages=[],
 
     # get config file if sent to cluster with --files
     spark_files_dir = SparkFiles.getRootDirectory()
-    config_files = [filename
-                    for filename in listdir(spark_files_dir)
-                    if filename.endswith('config.json')]
-
-    if config_files:
+    if config_files := [
+        filename
+        for filename in listdir(spark_files_dir)
+        if filename.endswith('config.json')
+    ]:
         path_to_config_file = path.join(spark_files_dir, config_files[0])
         with open(path_to_config_file, 'r') as config_file:
             config_dict = json.load(config_file)
-        spark_logger.warn('loaded config from ' + config_files[0])
+        spark_logger.warn(f'loaded config from {config_files[0]}')
     else:
         spark_logger.warn('no config file found')
         config_dict = None
